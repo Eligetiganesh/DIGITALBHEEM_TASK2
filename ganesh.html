@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking Form</title>
+    <style>
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hotel Booking Registration Form</h1>
+    <form id="bookingForm">
+        <div>
+            <label for="customerName">Customer Name:</label>
+            <input type="text" id="customerName" required>
+        </div>
+        <div>
+            <label for="checkInDate">Check-in Date:</label>
+            <input type="date" id="checkInDate" required>
+        </div>
+        <div>
+            <label for="totalDays">Total No of Days:</label>
+            <input type="number" id="totalDays" required>
+        </div>
+        <div>
+            <label for="totalPersons">Total No of Persons:</label>
+            <input type="number" id="totalPersons" required>
+        </div>
+        <div>
+            <label for="roomType">Room Type:</label>
+            <select id="roomType">
+                <option value="Delux Room">Delux Room</option>
+                <option value="Suite Room">Suite Room</option>
+            </select>
+        </div>
+        <div>
+            <label for="amenities">Amenities:</label>
+            <select id="amenities" multiple>
+                <option value="AC">AC</option>
+                <option value="Locker">Locker</option>
+            </select>
+        </div>
+        <div>
+            <label for="advanceAmount">Advance Amount:</label>
+            <input type="number" id="advanceAmount" required>
+        </div>
+        <div>
+            <label>Total Room Cost:</label>
+            <span id="totalRoomCost">0</span>
+        </div>
+        <div>
+            <label>Total Amenities Cost:</label>
+            <span id="totalAmenitiesCost">0</span>
+        </div>
+        <div>
+            <label>Total Cost:</label>
+            <span id="totalCost">0</span>
+        </div>
+        <div>
+            <label>Balance:</label>
+            <span id="balance">0</span>
+        </div>
+        <div>
+            <label for="extraPersons">Extra Persons:</label>
+            <input type="number" id="extraPersons" value="0">
+        </div>
+        <button type="button" onclick="calculateCost()">Calculate Cost</button>
+    </form>
+
+    <script>
+        function calculateCost() {
+            const totalDays = parseInt(document.getElementById("totalDays").value);
+            const roomType = document.getElementById("roomType").value;
+            const amenities = Array.from(document.getElementById("amenities").selectedOptions).map(option => option.value);
+            const advanceAmount = parseInt(document.getElementById("advanceAmount").value);
+            const extraPersons = parseInt(document.getElementById("extraPersons").value);
+
+            const roomRate = roomType === "Delux Room" ? 2500 : 4000;
+            const amenitiesCost = amenities.reduce((total, amenity) => {
+                if (amenity === "AC") total += 1000;
+                if (amenity === "Locker") total += 300;
+                return total;
+            }, 0);
+
+            const totalRoomCost = roomRate * totalDays;
+            const totalAmenitiesCost = amenitiesCost * totalDays;
+            const totalCost = totalRoomCost + totalAmenitiesCost;
+            const balance = totalCost - advanceAmount + (extraPersons * 1000);
+
+            document.getElementById("totalRoomCost").textContent = totalRoomCost;
+            document.getElementById("totalAmenitiesCost").textContent = totalAmenitiesCost;
+            document.getElementById("totalCost").textContent = totalCost;
+            document.getElementById("balance").textContent = balance;
+        }
+    </script>
+</body>
+</html>
